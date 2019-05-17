@@ -1,0 +1,6 @@
+__pycache__/
+jira_env/
+Pipfile*
+.python-version
+config.json
+CREDENTIALS_FILE
