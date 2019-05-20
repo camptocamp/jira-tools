@@ -3,7 +3,7 @@
 ## Install
 
 * Manage configuration in file [config.json](/Jira_tools/config.json)
-* Add permission to be executed: `chmod +x jira_projects_create_cards.py github_common.py`
+* Add permission to be executed: `chmod +x jira_projects_create_cards.py`
 
 * Run `pip install -r requirements.txt --user`
 
@@ -11,8 +11,8 @@
 
 * Using virtualenv
     * `virtualenv jira_env`
-    * `pip install -r requirements.txt`
     * `source jira_env/bin/activate`
+    * `pip install -r requirements.txt`
 
 **OR**
 
@@ -40,7 +40,7 @@
 ```
 ./jira_projects_create_cards.py \
 --topic business,odoo-9,need-5-digits \
---existing_issue_copy JRA-1330
+--template JRA-1330
 ```
 
 * Creating a new Jira card:

@@ -16,7 +16,9 @@ def repositories_by_topic(github, topic):
     return repos
 
 def _format_topic(topic_tuple):
-    """Format to render topic in a proper domain string for GitHub
+    """ Format to render topic in a proper domain string for GitHub
+
+        cause 'tuple' object has no attribute 'replace'
     """
     topic_text =  ' '.join(topic_tuple)
     return ' '.join(topic_text.split(','))

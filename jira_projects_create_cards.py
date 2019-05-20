@@ -21,7 +21,7 @@ class JiraTools:
         self.description = kwarg.get('description')
         self.issuetype = kwarg.get('issuetype')
         self.summary = kwarg.get('summary')
-        self.existing_issue_copy = kwarg.get('existing_issue_copy')
+        self.template = kwarg.get('template')
         self.csv_project_list = kwarg.get('csv_project_list')
         self.csv_jira_card = kwarg.get('csv_jira_card')
         self.jira = jira_connection()
@@ -93,8 +93,8 @@ class JiraTools:
             :return: jira project list
         """
         repo_list = []
-        with open(csv_file, newline='') as file:
-            reader = csv.DictReader(file)
+        with open(csv_file, newline='') as f:
+            reader = csv.DictReader(f)
             for row in reader:
                 repo_list.append(row.get('projects'))
         return repo_list
@@ -189,15 +189,16 @@ class JiraTools:
             :return: lite of dict to create one issue
         """
         issues_list = []
-        with open(csv_file, newline='') as file:
-            reader = csv.DictReader(file)
+        with open(csv_file, newline='') as f:
+            reader = csv.DictReader(f)
             for row in reader:
-                issue_dict = {
-                    'summary': row.get('summary'),
-                    'description': row.get('description'),
-                    'issuetype': {'name': row.get('issuetype'),},
-                }
-                issues_list.append(issue_dict)
+                issues_list.append(
+                    {
+                        'summary': row.get('summary'),
+                        'description': row.get('description'),
+                        'issuetype': {'name': row.get('issuetype'),},
+                    }
+                )
         return issues_list
 
     def _retrieve_or_duplicate_issue(self):
@@ -206,18 +207,18 @@ class JiraTools:
 
             :return: jira project list
         """
-        if not self.existing_issue_copy:
-            self.existing_issue_copy = input(
+        if not self.template:
+            self.template = input(
                 "Issue's name (ie. JRA-1330): "
             )
         not_existing_issue = True
         while not_existing_issue:
             try:
-                jira_obj = self.jira.issue(self.existing_issue_copy)
+                jira_obj = self.jira.issue(self.template)
                 not_existing_issue = False
             except Exception as expt:
                 print(expt)
-                self.existing_issue_copy = input(
+                self.template = input(
                     '\nIssus not found try again like JRA-1330 : '
                 )
 
@@ -231,7 +232,7 @@ class JiraTools:
     def _check_if_existing_issue(self):
         """ Redirect to right method depending the user choice.
         """
-        if self.existing_issue_copy:
+        if self.template:
             return self._retrieve_or_duplicate_issue()
         if self.issuetype and self.summary and self.description:
             return self._create_new_issue_content()
@@ -297,7 +298,7 @@ class JiraTools:
 @click.option('--description', default=False, help='New jira issue description')
 @click.option('--issuetype', default=False, help='New jira issue type')
 @click.option('--summary', default=False, help='New jira issue summary')
-@click.option('--existing_issue_copy', default=False, help='Issue to duplicate name like JRA-1330')
+@click.option('--template', default=False, help='Issue to duplicate name like JRA-1330')
 @click.option('--csv_project_list', default=False, help='Give the path to your project list csv')
 @click.option('--csv_jira_card', default=False, help='Give the path to your card list csv')
 def main(
@@ -305,7 +306,7 @@ def main(
         description,
         issuetype,
         summary,
-        existing_issue_copy,
+        template,
         csv_project_list,
         csv_jira_card):
     """
@@ -329,7 +330,7 @@ def main(
         'description': description,
         'issuetype': issuetype,
         'summary': summary,
-        'existing_issue_copy': existing_issue_copy,
+        'template': template,
         'csv_project_list': csv_project_list,
         'csv_jira_card': csv_jira_card,
     }

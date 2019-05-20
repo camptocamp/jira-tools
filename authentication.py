@@ -62,9 +62,8 @@ def github_connection():
             fd.write(str(auth.id))
 
     # Use token already created
-    token = id = ''
+    token = ''
     with open('CREDENTIALS_FILE', 'r') as fd:
         token = fd.readline().strip()  # Can't hurt to be paranoid
-        id = fd.readline().strip()
 
     return login(token=token)
