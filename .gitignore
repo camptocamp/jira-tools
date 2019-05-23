@@ -1,0 +1,4 @@
+__pycache__/
+jira_env/
+config.json
+CREDENTIALS_FILE
