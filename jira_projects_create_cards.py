@@ -310,13 +310,26 @@ def main(
         csv_project_list,
         csv_jira_card):
     """
-        Create a Jira issue on project list retrieved in GitHub
+        Create a Jira issue on project list.
 
-        The project list is retrieved from GitHub repositories
-        search using topic filter.
-        Multiple topics can be combined like "odoo-9,need-5-digits".
-        If you don't complete directly the CLI option, it is not a problem,
-        you will be prompted to use this tool.
+        1) Project list :
+        * The list can be directly provided by csv file (projects.csv) in argument
+            --csv_project_list projects.csv
+        * Or retrieved in GitHub by corresponding label
+            --topic business,odoo-9,need-5-digits
+
+        And the list can be edited before card creation in the shell
+        interaction
+
+        2) Card content:
+        * The content can be duplicated from an existing card
+            --template JRA-1330
+        * Or provided by csv file (card_template.csv) in argument
+            --csv_jira_card card_template.csv
+        * Or provided directly in arguments
+            --issuetype Task \
+            --summary "My summary" \
+            --description "One description\nwith multiple lines\n:-)"
 
         If your action corresponds to the script process, you will see
         for all your issue creation:\n
